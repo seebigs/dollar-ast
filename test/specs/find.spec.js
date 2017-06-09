@@ -4,8 +4,14 @@ const fs = require('fs');
 
 const code = fs.readFileSync(__dirname + '/../_code.js', 'utf8');
 
-
-describe('', (expect) => {
+describe('find', (expect) => {
     const $ = new $AST(code);
-    expect(typeof $('VariableDeclarator#foo').find).toBe('function');
+    console.log(JSON.stringify($.ast, null, 4));
+    console.log();
+    // expect(typeof $('VariableDeclarator#foo').find).toBe('function');
+    // $('VariableDeclarator#foo')
+    // $('VariableDeclaration.let')
+    // $('FunctionDeclaration')
+    // $('#foo')
+    $('.let')
 });

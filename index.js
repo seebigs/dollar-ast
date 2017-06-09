@@ -3,17 +3,24 @@ const utils = require('seebigs-utils');
 
 const arrProto = Array.prototype;
 const methodFiles = utils.listFiles('./lib');
+const walker = require('./utils/walker.js');
 
 function $AST (code) {
     code = code || ''; // catch all falsey values
+
+    let ast = typeof code === 'string' ? parse(code) : code; // need to add parents or use astw (with my PR)
+    let walk = walker(ast);
 
     function $ (selector, context) {
         return new $.fn.init(selector, context);
     }
 
+    $.ast = ast;
     $.isDollar = true;
+    $.walk = walk;
 
     $.fn = {
+        ast,
         isDollar: true,
         indexOf: arrProto.indexOf,
         push: arrProto.push,
@@ -22,8 +29,7 @@ function $AST (code) {
         unshift: arrProto.unshift,
         slice: arrProto.slice,
         splice: arrProto.splice, // Makes console.log display selected elements as an Array
-
-        ast: typeof code === 'string' ? parse(code) : code, // need to add parents or use astw (with my PR)
+        walk,
     };
 
     // add library methods
@@ -36,15 +42,6 @@ function $AST (code) {
         this.length = 0;
 
         return this.find(selector, context);
-    };
-
-    $.fn.empty = function () {
-        if (this.length) {
-            for (let i = this.length - 1; i >= 0; i--) {
-                delete this[i];
-            }
-            this.length = 0;
-        }
     };
 
     // Give the init function the $ prototype for later instantiation
