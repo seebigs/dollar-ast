@@ -1,5 +1,5 @@
 
-function walk (node, parent, iteratee) {
+function walk (node, parent, iteratee, skipNode) {
     let keys = Object.keys(node);
     for (let i = 0; i < keys.length; i++) {
         let key = keys[i];
@@ -20,12 +20,14 @@ function walk (node, parent, iteratee) {
             walk(child, node, iteratee);
         }
     }
-    iteratee(node);
+    if (!skipNode) {
+        iteratee(node);
+    }
 }
 
-function walker (ast) {
+function walker (ast, skipTopNode) {
     return function (iteratee) {
-        walk(ast, null, iteratee);
+        walk(ast, null, iteratee, skipTopNode);
     };
 }
 

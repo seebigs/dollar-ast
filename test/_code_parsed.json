@@ -1,0 +1,226 @@
+{
+    "type": "Program",
+    "start": 0,
+    "end": 233,
+    "body": [
+        {
+            "type": "VariableDeclaration",
+            "start": 1,
+            "end": 15,
+            "declarations": [
+                {
+                    "type": "VariableDeclarator",
+                    "start": 5,
+                    "end": 14,
+                    "id": {
+                        "type": "Identifier",
+                        "start": 5,
+                        "end": 8,
+                        "name": "foo"
+                    },
+                    "init": {
+                        "type": "Literal",
+                        "start": 11,
+                        "end": 14,
+                        "value": 123,
+                        "raw": "123"
+                    }
+                }
+            ],
+            "kind": "let"
+        },
+        {
+            "type": "FunctionDeclaration",
+            "start": 17,
+            "end": 61,
+            "id": {
+                "type": "Identifier",
+                "start": 26,
+                "end": 39,
+                "name": "privateMethod"
+            },
+            "generator": false,
+            "expression": false,
+            "params": [],
+            "body": {
+                "type": "BlockStatement",
+                "start": 42,
+                "end": 61,
+                "body": [
+                    {
+                        "type": "ReturnStatement",
+                        "start": 48,
+                        "end": 59,
+                        "argument": {
+                            "type": "Identifier",
+                            "start": 55,
+                            "end": 58,
+                            "name": "foo"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "FunctionDeclaration",
+            "start": 63,
+            "end": 191,
+            "id": {
+                "type": "Identifier",
+                "start": 72,
+                "end": 84,
+                "name": "publicMethod"
+            },
+            "generator": false,
+            "expression": false,
+            "params": [
+                {
+                    "type": "Identifier",
+                    "start": 85,
+                    "end": 88,
+                    "name": "one"
+                },
+                {
+                    "type": "Identifier",
+                    "start": 90,
+                    "end": 93,
+                    "name": "two"
+                }
+            ],
+            "body": {
+                "type": "BlockStatement",
+                "start": 95,
+                "end": 191,
+                "body": [
+                    {
+                        "type": "VariableDeclaration",
+                        "start": 101,
+                        "end": 115,
+                        "declarations": [
+                            {
+                                "type": "VariableDeclarator",
+                                "start": 105,
+                                "end": 114,
+                                "id": {
+                                    "type": "Identifier",
+                                    "start": 105,
+                                    "end": 108,
+                                    "name": "foo"
+                                },
+                                "init": {
+                                    "type": "Literal",
+                                    "start": 111,
+                                    "end": 114,
+                                    "value": 456,
+                                    "raw": "456"
+                                }
+                            }
+                        ],
+                        "kind": "let"
+                    },
+                    {
+                        "type": "FunctionDeclaration",
+                        "start": 121,
+                        "end": 166,
+                        "id": {
+                            "type": "Identifier",
+                            "start": 130,
+                            "end": 135,
+                            "name": "inner"
+                        },
+                        "generator": false,
+                        "expression": false,
+                        "params": [],
+                        "body": {
+                            "type": "BlockStatement",
+                            "start": 138,
+                            "end": 166,
+                            "body": []
+                        }
+                    },
+                    {
+                        "type": "ReturnStatement",
+                        "start": 172,
+                        "end": 189,
+                        "argument": {
+                            "type": "BinaryExpression",
+                            "start": 179,
+                            "end": 188,
+                            "left": {
+                                "type": "Identifier",
+                                "start": 179,
+                                "end": 182,
+                                "name": "one"
+                            },
+                            "operator": "+",
+                            "right": {
+                                "type": "Identifier",
+                                "start": 185,
+                                "end": 188,
+                                "name": "two"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "ExpressionStatement",
+            "start": 193,
+            "end": 232,
+            "expression": {
+                "type": "AssignmentExpression",
+                "start": 193,
+                "end": 231,
+                "operator": "=",
+                "left": {
+                    "type": "MemberExpression",
+                    "start": 193,
+                    "end": 207,
+                    "object": {
+                        "type": "Identifier",
+                        "start": 193,
+                        "end": 199,
+                        "name": "module"
+                    },
+                    "property": {
+                        "type": "Identifier",
+                        "start": 200,
+                        "end": 207,
+                        "name": "exports"
+                    },
+                    "computed": false
+                },
+                "right": {
+                    "type": "ObjectExpression",
+                    "start": 210,
+                    "end": 231,
+                    "properties": [
+                        {
+                            "type": "Property",
+                            "start": 216,
+                            "end": 228,
+                            "method": false,
+                            "shorthand": true,
+                            "computed": false,
+                            "key": {
+                                "type": "Identifier",
+                                "start": 216,
+                                "end": 228,
+                                "name": "publicMethod"
+                            },
+                            "kind": "init",
+                            "value": {
+                                "type": "Identifier",
+                                "start": 216,
+                                "end": 228,
+                                "name": "publicMethod"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "sourceType": "script"
+}

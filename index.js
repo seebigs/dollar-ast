@@ -27,6 +27,7 @@ function $AST (code) {
         pop: arrProto.pop,
         shift: arrProto.shift,
         unshift: arrProto.unshift,
+        reverse: arrProto.reverse,
         slice: arrProto.slice,
         splice: arrProto.splice, // Makes console.log display selected elements as an Array
         walk,
@@ -38,10 +39,11 @@ function $AST (code) {
         $.fn[filename] = require(filepath);
     });
 
-    $.fn.init = function (selector, context) {
-        this.length = 0;
+    $.fn.forEach = $.fn.each;
 
-        return this.find(selector, context);
+    $.fn.init = function (selector, context) {
+        this.empty();
+        return this.concat(this.find(selector, context));
     };
 
     // Give the init function the $ prototype for later instantiation
