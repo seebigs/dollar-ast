@@ -42,7 +42,7 @@ function $AST (code) {
     $.fn.forEach = $.fn.each;
 
     $.fn.init = function (selector, context) {
-        this.empty();
+        this.zero();
         return this.concat(this.find(selector, context));
     };
 
