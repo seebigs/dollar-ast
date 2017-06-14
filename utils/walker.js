@@ -1,33 +1,34 @@
 
-function walk (node, parent, iteratee, skipNode) {
+function walk (node, iteratee, skipNode) {
     let keys = Object.keys(node);
     for (let i = 0; i < keys.length; i++) {
         let key = keys[i];
-        if (key === 'parent') continue;
+        if (key === 'parent' || key === 'prev') continue;
 
-        let child = node[key];
-        if (Array.isArray(child)) {
-            for (let j = 0; j < child.length; j++) {
-                let c = child[j];
-                if (c && typeof c.type === 'string') {
-                    c.parent = node;
-                    walk(c, node, iteratee);
+        let value = node[key];
+        if (Array.isArray(value)) {
+            for (let j = 0; j < value.length; j++) {
+                let arrMember = value[j];
+                if (arrMember && typeof arrMember.type === 'string') {
+                    arrMember.prev = j > 0 ? value[j-1] : null;
+                    arrMember.parent = node;
+                    walk(arrMember, iteratee);
                 }
             }
         }
-        else if (child && typeof child.type === 'string') {
-            child.parent = node;
-            walk(child, node, iteratee);
+        else if (value && typeof value.type === 'string') {
+            value.parent = node;
+            walk(value, iteratee);
         }
     }
-    if (!skipNode) {
+    if (typeof iteratee === 'function' && !skipNode) {
         iteratee(node);
     }
 }
 
 function walker (ast, skipTopNode) {
     return function (iteratee) {
-        walk(ast, null, iteratee, skipTopNode);
+        walk(ast, iteratee, skipTopNode);
     };
 }
 

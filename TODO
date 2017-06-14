@@ -1,3 +1,26 @@
+before
+after
+append
+prepend
+wrap
+
+empty
+replace
+remove
+
+attr
+removeAttr
+
+children
+first
+last
+next
+parent
+siblings
+
+
+
+=====
 
 Other selectors:
 $('Program > .let')

@@ -1,15 +1,13 @@
-const parse = require('acorn').parse;
+const arrProto = Array.prototype;
+const AstLayer = require('./utils/ast.js');
 const utils = require('seebigs-utils');
 
-const arrProto = Array.prototype;
 const methodFiles = utils.listFiles('./lib');
-const walker = require('./utils/walker.js');
 
 function $AST (code) {
     code = code || ''; // catch all falsey values
 
-    let ast = typeof code === 'string' ? parse(code) : code; // need to add parents or use astw (with my PR)
-    let walk = walker(ast);
+    let ast = new AstLayer(code);
 
     function $ (selector, context) {
         return new $.fn.init(selector, context);
@@ -17,7 +15,6 @@ function $AST (code) {
 
     $.ast = ast;
     $.isDollar = true;
-    $.walk = walk;
 
     $.fn = {
         ast,
@@ -30,7 +27,6 @@ function $AST (code) {
         reverse: arrProto.reverse,
         slice: arrProto.slice,
         splice: arrProto.splice, // Makes console.log display selected elements as an Array
-        walk,
     };
 
     // add library methods
@@ -54,5 +50,4 @@ function $AST (code) {
 
 $AST.isDollar = true;
 
-module.$ = new $AST();
 module.exports = $AST;

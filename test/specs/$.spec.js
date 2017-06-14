@@ -1,9 +1,5 @@
 
 const $AST = require('../../index.js');
-const fs = require('fs');
-const parse = require('acorn').parse;
-
-const code = fs.readFileSync(__dirname + '/../_code.js', 'utf8');
 
 describe('$', function () {
 
@@ -11,7 +7,7 @@ describe('$', function () {
         const $a = new $AST('let foo = 123;');
         let matchA = $a('#foo');
         expect(matchA.length).toBe(1);
-        expect(matchA[0].type).toBe(parse(code).body[0].declarations[0].type);
+        expect(matchA[0].type).toBe('VariableDeclarator');
 
         const $b = new $AST('let bar = 456;');
         let matchB = $b('#foo');
