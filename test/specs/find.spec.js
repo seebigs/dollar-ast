@@ -22,6 +22,7 @@ describe('find', () => {
         var match = $(' #foo ');
         expect(match.length).toBe(2);
         expect(match[0].type).toBe('VariableDeclarator');
+        expect($('#action').length).toBe(1, '#action');
     });
 
     describe('by attr', function (expect) {

@@ -9,7 +9,7 @@ function publicMethod(one, two) {
     let foo = 456;
 
     function inner() {
-        // do things
+        action();
     }
 
     return one + two;

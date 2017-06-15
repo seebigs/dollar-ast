@@ -24,7 +24,16 @@ function selectorMatcher (selector) {
 
             let matchId = false;
             if (id) {
-                let idName = (node.id && node.id.name) || (node.name && node.name.name);
+                let idName = null;
+
+                if (node.id) {
+                    idName = node.id.name;
+                } else if (node.callee) {
+                    idName = node.callee.name;
+                } else if (node.name) {
+                    idName = node.name.name;
+                }
+
                 if (idName === id) {
                     matchId = true;
                 }

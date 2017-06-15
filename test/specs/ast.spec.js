@@ -3,7 +3,7 @@ const $AST = require('../../index.js');
 const fs = require('fs');
 
 const code = fs.readFileSync(__dirname + '/../_code.js', 'utf8');
-const $ = new $AST('function originalCode (){}');
+const $ = new $AST('function originalCode (){ let me = "awesome" }');
 
 describe('ast', () => {
 
@@ -28,9 +28,18 @@ describe('ast', () => {
 
     });
 
+    describe('generate', () => {
+
+        describe('converts AST into code', function (expect) {
+            let code = $.ast.generate();
+            expect(code).toBe('function originalCode() {\n    let me = \'awesome\';\n}');
+        });
+
+    });
+
     describe('stringify', () => {
 
-        describe('converts AST into a readable string', function (expect) {
+        describe('converts AST into a readable JSON string', function (expect) {
             let str = $.ast.stringify();
             expect(str.indexOf('{\n    "type": "Program",\n    "start": 0,')).toBe(0);
         });
