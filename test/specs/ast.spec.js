@@ -46,7 +46,7 @@ describe('ast', () => {
 
         describe('protects against noisy and circular references', function (expect) {
             let str = $().ast.stringify();
-            expect(str.indexOf('[ ParentNode ]')).not.toBe(-1);
+            expect(str.indexOf('"_"')).toBe(-1);
         });
 
     });

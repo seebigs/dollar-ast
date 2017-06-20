@@ -1,6 +1,10 @@
 const each = require('../utils/each.js');
 const parse = require('../utils/parse.js');
 
+/**
+ * Normalizes different types of content input into the same thing
+ * Always returns an Array of nodes
+ */
 function normalizeContent (toBeAdded, flattenedArguments) {
     let content, contentType;
 
@@ -26,13 +30,13 @@ function normalizeContent (toBeAdded, flattenedArguments) {
     });
 }
 
-function insertAsSibling (toBeAdded, matches, options) {
-    each(matches, function (match) { // for each node in the matched collection
-        each(match.parent, function (value, key) { // for each key:value in the parent of each matched node
-            if (Array.isArray(value)) {
+function insertAsSibling (matches, toBeAdded, before) {
+    each(matches, function (match) {
+        if (match._) {
+            if (Array.isArray(match._._containerParent)) {
                 let newContents = [];
-                each(value, function (node, index) { // for each node within an array-like-value
-                    if (!options.before) {
+                each(match._._containerParent, function (node, index) {
+                    if (!before) {
                         newContents.push(node);
                     }
                     if (node === match) {
@@ -40,21 +44,23 @@ function insertAsSibling (toBeAdded, matches, options) {
                             newContents.push(content);
                         });
                     }
-                    if (options.before) {
+                    if (before) {
                         newContents.push(node);
                     }
                 });
-                match.parent[key] = newContents;
+                match._._nodeParent[match._._nodeKey] = newContents;
+            } else {
+                throw new Error('Sibling nodes can only be inserted into an Array: "' + match.type + '" is not an Array');
             }
-        });
+        }
     });
 }
 
-function insertInside (toBeAdded, matches, options) {
-    each(matches, function (match) { // for each node in the matched collection
+function insertInside (matches, toBeAdded, before) {
+    each(matches, function (match) {
         if (match.body) {
             let bodyArray = Array.isArray(match.body) ? match.body : match.body.body;
-            if (options.before) {
+            if (before) {
                 each(toBeAdded, function (content) {
                     bodyArray.unshift(content);
                 });
@@ -67,15 +73,36 @@ function insertInside (toBeAdded, matches, options) {
     });
 }
 
-function insert (arrayOfContents, matches, options = { asSibling: false, before: false }) {
+function insertReplace (matches, toBeAdded) {
+    let newContent = toBeAdded[0];
+    each(matches, function (match) {
+        if (match._) {
+            if (newContent.type === 'ExpressionStatement') {
+                newContent = newContent.expression;
+            }
+            match._._containerParent[match._._containerKey] = newContent;
+        }
+    });
+}
+
+function insert (matches, arrayOfContents, before, insertMethod) {
     let flattenedContents = [].concat.apply([], arrayOfContents); // Flatten nested arrays
     let toBeAdded = [];
     normalizeContent(toBeAdded, flattenedContents);
-    if (options.asSibling) {
-        insertAsSibling(toBeAdded, matches, options);
-    } else {
-        insertInside(toBeAdded, matches, options);
-    }
+    insertMethod(matches, toBeAdded, before);
 }
 
-module.exports = insert;
+module.exports = {
+
+    asSibling: function (matches, arrayOfContents, before) {
+        insert(matches, arrayOfContents, before, insertAsSibling);
+    },
+
+    inside: function (matches, arrayOfContents, before) {
+        insert(matches, arrayOfContents, before, insertInside);
+    },
+
+    replace: function (matches, contents) {
+        insert(matches, [contents], null, insertReplace);
+    }
+};

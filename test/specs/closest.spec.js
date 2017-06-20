@@ -10,14 +10,14 @@ describe('closest', () => {
     describe('matches ancestors by string', function (expect) {
         var match = $('ReturnStatement').closest('FunctionDeclaration');
         expect(match.length).toBe(2);
-        expect(match[0].id.name).toBe('privateMethod');
-        expect(match[1].id.name).toBe('publicMethod');
+        expect(match[0] && match[0].id.name).toBe('privateMethod');
+        expect(match[1] && match[1].id.name).toBe('publicMethod');
     });
 
     describe('matches self', function (expect) {
         var match = $('FunctionDeclaration').closest('#inner');
         expect(match.length).toBe(1);
-        expect(match[0].id.name).toBe('inner');
+        expect(match[0] && match[0].id.name).toBe('inner');
     });
 
     describe('returns dollar', function (expect) {

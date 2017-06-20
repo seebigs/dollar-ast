@@ -9,7 +9,7 @@ describe('has', () => {
 
     describe('reduces matched set to only those that contain matching children', function (expect) {
         let matches = $('FunctionDeclaration').has('VariableDeclaration');
-        expect(matches.length).toBe(1);
+        expect(matches.length).toBe(2);
     });
 
     describe('returns dollar', function (expect) {

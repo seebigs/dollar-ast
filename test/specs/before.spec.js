@@ -18,8 +18,24 @@ describe('before', () => {
                 declarations: [
                     {
                         type: 'VariableDeclarator',
+                        start: 4,
+                        end: 10,
+                        id: {
+                            type: 'Identifier',
+                            start: 4,
+                            end: 5,
+                            name: 'x',
+                        },
+                        init: {
+                            type: 'Literal',
+                            start: 8,
+                            end: 10,
+                            value: 99,
+                            raw: '99',
+                        },
                     }
                 ],
+                kind: 'let',
             },
             testCode,
             [testCode],

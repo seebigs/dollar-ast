@@ -14,13 +14,13 @@ describe('find', () => {
 
     describe('by type', function (expect) {
         var match = $('  VariableDeclarator  ');
-        expect(match.length).toBe(2);
+        expect(match.length).toBe(3);
         expect(match[0].type).toBe('VariableDeclarator');
     });
 
     describe('by id', function (expect) {
         var match = $(' #foo ');
-        expect(match.length).toBe(2);
+        expect(match.length).toBe(3);
         expect(match[0].type).toBe('VariableDeclarator');
         expect($('#action').length).toBe(1, '#action');
     });
@@ -75,13 +75,13 @@ describe('find', () => {
 
     describe('by dollar instance', function (expect) {
         var match = $($('#foo'));
-        expect(match.length).toBe(2);
+        expect(match.length).toBe(3);
         expect(match[0].type).toBe('VariableDeclarator');
     });
 
     describe('with context type', function (expect) {
         var match = $('VariableDeclaration', 'FunctionDeclaration');
-        expect(match.length).toBe(1);
+        expect(match.length).toBe(2);
         expect(match[0].type).toBe('VariableDeclaration');
     });
 

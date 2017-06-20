@@ -10,7 +10,7 @@ function get () {
 function set (code) {
     let parsedCode = parse(code);
     this.walk = walker(parsedCode);
-    this.walk(); // add parent, prev, etc. to the tree
+    this.walk(); // add parent to the tree
     return this.__ast = parsedCode;
 }
 

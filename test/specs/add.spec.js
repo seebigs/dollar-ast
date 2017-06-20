@@ -9,7 +9,7 @@ describe('add', () => {
 
     describe('add new nodes by string with context', function (expect) {
         var matches = $('FunctionDeclaration').add('VariableDeclaration', 'BlockStatement');
-        expect(matches.length).toBe(4);
+        expect(matches.length).toBe(5);
     });
 
     describe('returns dollar', function (expect) {

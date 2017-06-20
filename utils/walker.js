@@ -1,34 +1,40 @@
+const each = require('./each.js');
 
-function walk (node, iteratee, skipNode) {
-    let keys = Object.keys(node);
-    for (let i = 0; i < keys.length; i++) {
-        let key = keys[i];
-        if (key === 'parent' || key === 'prev') continue;
-
-        let value = node[key];
-        if (Array.isArray(value)) {
-            for (let j = 0; j < value.length; j++) {
-                let arrMember = value[j];
-                if (arrMember && typeof arrMember.type === 'string') {
-                    arrMember.prev = j > 0 ? value[j-1] : null;
-                    arrMember.parent = node;
-                    walk(arrMember, iteratee);
-                }
+function walk (node, nodeKey, iteratee, skipNode) {
+    each(node, function (value, key) {
+        if (value && key !== '_') {
+            if (Array.isArray(value)) {
+                each(value, function (arrMember, arrIndex) {
+                    if (arrMember && typeof arrMember.type === 'string') {
+                        arrMember._ = {
+                            _containerKey: arrIndex,
+                            _containerParent: value,
+                            _nodeKey: key,
+                            _nodeParent: node,
+                        };
+                        walk(arrMember, arrIndex, iteratee);
+                    }
+                });
+            }
+            else if (typeof value.type === 'string') {
+                value._ = {
+                    _containerKey: key,
+                    _containerParent: node,
+                    _nodeKey: key,
+                    _nodeParent: node,
+                };
+                walk(value, key, iteratee);
             }
         }
-        else if (value && typeof value.type === 'string') {
-            value.parent = node;
-            walk(value, iteratee);
-        }
-    }
+    });
     if (typeof iteratee === 'function' && !skipNode) {
-        iteratee(node);
+        iteratee(node, nodeKey);
     }
 }
 
 function walker (ast, skipTopNode) {
     return function (iteratee) {
-        walk(ast, iteratee, skipTopNode);
+        walk(ast, null, iteratee, skipTopNode);
     };
 }
 

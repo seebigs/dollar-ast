@@ -32,6 +32,12 @@ function selectorMatcher (selector) {
                     idName = node.callee.name;
                 } else if (node.name) {
                     idName = node.name.name;
+                } else if (node.init) {
+                    idName = node.init.name;
+                } else if (node.argument) {
+                    idName = node.argument.name;
+                } else if (node.key) {
+                    idName = node.key.name;
                 }
 
                 if (idName === id) {

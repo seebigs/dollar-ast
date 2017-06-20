@@ -10,6 +10,7 @@ function publicMethod(one, two) {
 
     function inner() {
         action();
+        var x = foo;
     }
 
     return one + two;
