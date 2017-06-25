@@ -6,6 +6,8 @@ function walk (node, nodeKey, iteratee, skipNode) {
             if (Array.isArray(value)) {
                 each(value, function (arrMember, arrIndex) {
                     if (arrMember && typeof arrMember.type === 'string') {
+                        delete arrMember.start;
+                        delete arrMember.end;
                         arrMember._ = {
                             _containerKey: arrIndex,
                             _containerParent: value,
@@ -17,6 +19,8 @@ function walk (node, nodeKey, iteratee, skipNode) {
                 });
             }
             else if (typeof value.type === 'string') {
+                delete value.start;
+                delete value.end;
                 value._ = {
                     _containerKey: key,
                     _containerParent: node,

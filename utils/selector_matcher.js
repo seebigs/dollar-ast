@@ -6,16 +6,26 @@ function selectorMatcher (selector) {
     if (selectorType === 'string') {
         let type = (selector.match(/^(\w+)/) || [])[1];
         let id = (selector.match(/#([\w-]+)/) || [])[1];
-        let attr = (selector.match(/\[([\w-]+)=?([\w-]+)?\]/) || []);
+        let attr = (selector.match(/\[([\w-\.]+)=?([\w-]+)?\]/) || []);
+        let attrProps;
+        let attrPropsLen;
+        let attrValue;
+        if (attr.length) {
+            attrProps = attr[1].split('.');
+            attrPropsLen = attrProps.length;
+            attrValue = attr[2];
+        }
 
         return function (node) {
             if (!node || typeof node.type !== 'string') {
                 return false;
             }
 
+            let nodeType = node.type;
+
             let matchNodeType = false;
             if (type) {
-                if (node.type === type) {
+                if (nodeType === type) {
                     matchNodeType = true;
                 }
             } else {
@@ -28,17 +38,33 @@ function selectorMatcher (selector) {
 
                 if (node.id) {
                     idName = node.id.name;
-                } else if (node.callee) {
+                } else if (nodeType === 'CallExpression') {
                     idName = node.callee.name;
-                } else if (node.name) {
-                    idName = node.name.name;
-                } else if (node.init) {
-                    idName = node.init.name;
-                } else if (node.argument) {
+                } else if (nodeType === 'ReturnStatement') {
                     idName = node.argument.name;
-                } else if (node.key) {
-                    idName = node.key.name;
+                } else if (nodeType === 'MemberExpression') {
+                    idName = node.object.name;
+                } else if (nodeType === 'AssignmentExpression') {
+                    idName = node.left.name;
+                } else if (nodeType === 'ExpressionStatement') {
+                    idName = node.expression.name;
+                } else if (nodeType === 'NewExpression') {
+                    idName = node.callee.name;
                 }
+
+                // if (node.id) {
+                //     idName = node.id.name;
+                // } else if (node.callee) {
+                //     idName = node.callee.name;
+                // } else if (node.name) {
+                //     idName = node.name.name;
+                // } else if (node.init) {
+                //     idName = node.init.name;
+                // } else if (node.argument) {
+                //     idName = node.argument.name;
+                // } else if (node.key) {
+                //     idName = node.key.name;
+                // }
 
                 if (idName === id) {
                     matchId = true;
@@ -48,21 +74,25 @@ function selectorMatcher (selector) {
             }
 
             let matchAttr = false;
-            if (attr.length) {
-                if (attr[2]) {
-                    let nodeVal = node[attr[1]];
+            if (attr) {
+                let nodeVal = node;
+                for (let i = 0; i < attrPropsLen; i++) {
+                    nodeVal = nodeVal[attrProps[i]];
+                    if (!nodeVal) { break; }
+                }
+                if (attrValue) {
                     if (Array.isArray(nodeVal)) {
-                        if (nodeVal.length === parseInt(attr[2], 10)) {
+                        if (nodeVal.length === parseInt(attrValue, 10)) {
                             matchAttr = true;
                         }
                     } else {
-                        if (('' + nodeVal) === attr[2]) {
+                        if (('' + nodeVal) === attrValue) {
                             matchAttr = true;
                         }
                     }
 
                 } else {
-                    if (typeof node[attr[1]] !== 'undefined') {
+                    if (typeof nodeVal !== 'undefined') {
                         matchAttr = true;
                     }
                 }

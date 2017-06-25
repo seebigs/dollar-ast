@@ -1,5 +1,6 @@
 
-let foo = 123;
+let foo = 123,
+    bar = 456;
 
 function privateMethod() {
     return foo;
@@ -13,7 +14,7 @@ function publicMethod(one, two) {
         var x = foo;
     }
 
-    return one + two;
+    return one + foo;
 }
 
 module.exports = {

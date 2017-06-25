@@ -5,26 +5,27 @@ const parse = require('../utils/parse.js');
  * Normalizes different types of content input into the same thing
  * Always returns an Array of nodes
  */
-function normalizeContent (toBeAdded, flattenedArguments) {
-    let content, contentType;
-
-    each(flattenedArguments, function (arg, i) {
-        content = arg;
-        contentType = typeof content;
-
+function normalizeContent (toBeAdded, flattenedArguments, matches) {
+    each(flattenedArguments, function (content, i) {
+        let contentType = typeof content;
         if (content) {
             if (contentType === 'string') {
-                normalizeContent(toBeAdded, parse(content).body);
+                normalizeContent(toBeAdded, parse(content).body, matches);
 
             } else if (contentType === 'function') {
-                let returnValue = [content(arg, i)];
-                normalizeContent(toBeAdded, returnValue);
-
-            } else if (typeof content.type === 'string') {
-                toBeAdded.push(content);
+                let returnValue = [content(matches)];
+                normalizeContent(toBeAdded, returnValue, matches);
 
             } else if (content.length) {
-                normalizeContent(toBeAdded, content);
+                normalizeContent(toBeAdded, content, matches);
+
+            } else if (typeof content.type === 'string') {
+                // if (content.type === 'ExpressionStatement') {
+                //     toBeAdded.push(content.expression);
+                // } else {
+                //     toBeAdded.push(content);
+                // }
+                toBeAdded.push(content);
             }
         }
     });
@@ -73,14 +74,58 @@ function insertInside (matches, toBeAdded, before) {
     });
 }
 
+function sliceReplace (n, toBeAdded) {
+    Array.prototype.splice.apply(n._._containerParent, [n._._containerKey, 1].concat(toBeAdded));
+}
+
 function insertReplace (matches, toBeAdded) {
-    let newContent = toBeAdded[0];
     each(matches, function (match) {
         if (match._) {
-            if (newContent.type === 'ExpressionStatement') {
-                newContent = newContent.expression;
+            let n = match;
+            while (n) {
+                if (n._) {
+                    let nKey = n._._nodeKey;
+                    let cParent = n._._containerParent;
+                    if (nKey === 'body') {
+                        if (n.type === 'ReturnStatement') {
+                            let modToBeAdded = [];
+                            toBeAdded.forEach(function (tba) {
+                                if (tba.type === 'FunctionDeclaration') {
+                                    try {
+                                        modToBeAdded.push(tba.body.body[0]);
+                                    } catch(e) {
+                                        modToBeAdded.push(tba);
+                                    }
+                                } else {
+                                    modToBeAdded.push(tba);
+                                }
+                            });
+                            sliceReplace(n, modToBeAdded);
+                        } else {
+                            sliceReplace(n, toBeAdded);
+                        }
+                        break;
+
+                    } else if (nKey === 'arguments') {
+                        let modToBeAdded = [];
+                        toBeAdded.forEach(function (tba) {
+                            if (tba.type === 'ExpressionStatement') {
+                                modToBeAdded.push(tba.expression);
+                            } else {
+                                modToBeAdded.push(tba);
+                            }
+                        });
+                        sliceReplace(n, modToBeAdded);
+                        break;
+
+                    } else {
+                        n = n._._nodeParent;
+                    }
+
+                } else {
+                    break;
+                }
             }
-            match._._containerParent[match._._containerKey] = newContent;
         }
     });
 }
@@ -88,7 +133,7 @@ function insertReplace (matches, toBeAdded) {
 function insert (matches, arrayOfContents, before, insertMethod) {
     let flattenedContents = [].concat.apply([], arrayOfContents); // Flatten nested arrays
     let toBeAdded = [];
-    normalizeContent(toBeAdded, flattenedContents);
+    normalizeContent(toBeAdded, flattenedContents, matches);
     insertMethod(matches, toBeAdded, before);
 }
 
