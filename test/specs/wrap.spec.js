@@ -1,36 +1,73 @@
-
 const $AST = require('../../index.js');
-const fs = require('fs');
 
-const code = fs.readFileSync(__dirname + '/../_code.js', 'utf8');
-const $ = new $AST('function originalCode (){ foo() }');
-// const $ = new $AST('function originalCode (){ hello(foo()) }');
-// const $ = new $AST('function originalCode (){ var x = foo; }');
-// const $ = new $AST('function originalCode (){ var x = hallo(foo); }');
+const codeTypes = [
+    {
+        type: 'Quotes',
+        before: '"___"',
+        after: '"foo()"',
+    },
+    {
+        type: 'ExpressionStatement',
+        before: '___',
+        after: 'foo()',
+    },
+    {
+        type: 'CallExpression Arguments',
+        before: 'hello(___)',
+        after: 'hello(foo())',
+    },
+    {
+        type: 'MemberExpression Property',
+        before: 'hello[___]',
+        after: 'hello[foo()]',
+    },
+    {
+        type: 'ExpressionStatement',
+        before: 'hello(); ___; hello();',
+        after: 'hello(); foo(); hello();',
+    },
+    {
+        type: 'TryStatement',
+        before: 'try { ___; } catch(e) {}',
+        after: 'try { foo(); } catch(e) {}',
+    },
+    {
+        type: 'BinaryExpression',
+        before: 'hello + ___ + hello',
+        after: 'hello + foo() + hello',
+    },
+    {
+        type: 'IIFE',
+        before: '(function(){___})()',
+        after: '(function(){ foo() })()',
+    },
+];
 
 describe('wrap', () => {
 
-    // describe('wraps matched nodes with the provided code elements', function (expect) {
-    //     console.log($.ast.stringify());
-    //     console.log();
-    //
-    //     $('#foo').wrap('___')
-    //     // $('#foo').wrap('hello(___)')
-    //     // $('#foo').wrap('hello[___]')
-    //     // $('#foo').wrap('"___"')
-    //     // $('#foo').wrap('try { ___; } catch(e) {}')
-    //     // $('#foo').wrap('hello(); ___; hello();')
-    //     // console.log( $('[name=foo]').wrap('hello(___)') );
-    //     // $('#foo').wrap('(function(){___})()')
-    //
-    //     // console.log('\n');
-    //     // console.log($.ast.stringify());
-    //     // console.log('\n-----\n');
-    //     // console.log($.ast.generate());
-    // });
+    describe('wraps matched nodes with the provided code elements', function () {
+        codeTypes.forEach(function (code) {
+            describe(code.type, function (expect) {
+                let $ = new $AST('function originalCode (){ foo() }');
+                let $test = new $AST('function originalCode (){ ' + code.after + ' }');
 
-    // describe('returns dollar', function (expect) {
-    //     expect($().wrap({}).isDollar).toBe(true);
-    // });
+                $('#foo').wrap(code.before);
+
+                expect($.ast.generate()).toBe($test.ast.generate());
+
+                if (code.print) {
+                    console.log();
+                    console.log($.ast.stringify());
+                    console.log();
+                    console.log($test.ast.stringify());
+                }
+            });
+        });
+    });
+
+    describe('returns dollar', function (expect) {
+        let $ = new $AST();
+        expect($().wrap({}).isDollar).toBe(true);
+    });
 
 });
