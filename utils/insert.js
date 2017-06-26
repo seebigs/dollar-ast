@@ -20,11 +20,6 @@ function normalizeContent (toBeAdded, flattenedArguments, matches) {
                 normalizeContent(toBeAdded, content, matches);
 
             } else if (typeof content.type === 'string') {
-                // if (content.type === 'ExpressionStatement') {
-                //     toBeAdded.push(content.expression);
-                // } else {
-                //     toBeAdded.push(content);
-                // }
                 toBeAdded.push(content);
             }
         }

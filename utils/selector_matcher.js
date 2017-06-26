@@ -1,3 +1,4 @@
+const nodeNames = require('./node_names.js');
 
 function selectorMatcher (selector) {
     let selectorType = typeof selector;
@@ -34,24 +35,7 @@ function selectorMatcher (selector) {
 
             let matchId = false;
             if (id) {
-                let idName = null;
-
-                if (node.id) {
-                    idName = node.id.name;
-                } else if (nodeType === 'CallExpression') {
-                    idName = node.callee.name;
-                } else if (nodeType === 'ReturnStatement') {
-                    idName = node.argument.name;
-                } else if (nodeType === 'MemberExpression') {
-                    idName = node.object.name;
-                } else if (nodeType === 'AssignmentExpression') {
-                    idName = node.left.name;
-                } else if (nodeType === 'ExpressionStatement') {
-                    idName = node.expression.name;
-                } else if (nodeType === 'NewExpression') {
-                    idName = node.callee.name;
-                }
-
+                let idName = nodeNames.get(node);
                 if (idName === id) {
                     matchId = true;
                 }
