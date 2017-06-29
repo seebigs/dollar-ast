@@ -1,4 +1,3 @@
-attr
 removeAttr
 
 children
@@ -36,3 +35,5 @@ UglifyJS2 parser
     -
 treehugger.js
     very different from the others
+Esotope
+    fast? https://github.com/inikulin/esotope
