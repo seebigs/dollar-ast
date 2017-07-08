@@ -3,9 +3,10 @@ const $AST = require('../../index.js');
 describe('attr', () => {
 
     describe('sets new attributes', function (expect) {
-        const $ = new $AST('function originalCode() {}');
-        $('#originalCode').attr('little.boy.blue', 'horny');
-        expect($.ast.get().body[0].little.boy.blue).toBe('horny');
+        const $ = new $AST('function originalCode() { var originalCode = false; }');
+        $('#originalCode').attr('little.boy.blue', 'horny').each(function (node) {
+            expect(node.little && node.little.boy.blue).toBe('horny', node.type);
+        });
     });
 
     describe('overrides existing attributes', function (expect) {
