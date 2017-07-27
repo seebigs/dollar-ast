@@ -1,4 +1,4 @@
-const each = require('../utils/each.js');
+const each = require('seebigs-each');
 const parse = require('../utils/parse.js');
 
 /**

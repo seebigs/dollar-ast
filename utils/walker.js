@@ -1,4 +1,4 @@
-const each = require('./each.js');
+const each = require('seebigs-each');
 
 function walk (node, nodeKey, iteratee, skipNode) {
     each(node, function (value, key) {
