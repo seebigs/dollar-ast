@@ -26,7 +26,7 @@ function $AST (code) {
         unshift: arrProto.unshift,
         reverse: arrProto.reverse,
         slice: arrProto.slice,
-        splice: arrProto.splice, // Makes console.log display selected elements as an Array
+        splice: arrProto.splice,
     };
 
     // add library methods

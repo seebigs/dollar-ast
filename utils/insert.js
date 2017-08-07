@@ -1,5 +1,6 @@
+const childNodes = require('./child_nodes.js');
 const each = require('seebigs-each');
-const parse = require('../utils/parse.js');
+const parse = require('./parse.js');
 
 /**
  * Normalizes different types of content input into the same thing
@@ -55,7 +56,7 @@ function insertAsSibling (matches, toBeAdded, before) {
 function insertInside (matches, toBeAdded, before) {
     each(matches, function (match) {
         if (match.body) {
-            let bodyArray = Array.isArray(match.body) ? match.body : match.body.body;
+            let bodyArray = childNodes.get(match);
             if (before) {
                 each(toBeAdded, function (content) {
                     bodyArray.unshift(content);
