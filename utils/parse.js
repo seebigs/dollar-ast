@@ -1,4 +1,4 @@
-const parser = require('acorn').parse;
+const parser = require('recast').parse;
 
 function parse (code) {
     return typeof code === 'string' ? parser(code) : code;

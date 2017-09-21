@@ -4,42 +4,42 @@ const codeTypes = [
     {
         type: 'Quotes',
         before: '"___"',
-        after: '"foo()"',
+        after: ' "foo()"; ',
     },
     {
         type: 'ExpressionStatement',
         before: '___',
-        after: 'foo()',
+        after: ' foo(); ',
     },
     {
         type: 'CallExpression Arguments',
         before: 'hello(___)',
-        after: 'hello(foo())',
+        after: ' hello(foo()); ',
     },
     {
         type: 'MemberExpression Property',
         before: 'hello[___]',
-        after: 'hello[foo()]',
+        after: ' hello[foo()]; ',
     },
     {
         type: 'ExpressionStatement',
         before: 'hello(); ___; hello();',
-        after: 'hello(); foo(); hello();',
+        after: '\n  hello();foo();hello();\n',
     },
     {
         type: 'TryStatement',
         before: 'try { ___; } catch(e) {}',
-        after: 'try { foo(); } catch(e) {}',
+        after: '\n  try { foo(); } catch(e) {}\n',
     },
     {
         type: 'BinaryExpression',
         before: 'hello + ___ + hello',
-        after: 'hello + foo() + hello',
+        after: ' hello + foo() + hello; ',
     },
     {
         type: 'IIFE',
         before: '(function(){___})()',
-        after: '(function(){ foo() })()',
+        after: ' (function() {foo()})(); ',
     },
 ];
 
@@ -48,8 +48,8 @@ describe('wrap', () => {
     describe('wraps matched nodes with the provided code elements', function () {
         codeTypes.forEach(function (code) {
             describe(code.type, function (expect) {
-                let $ = new $AST('function originalCode (){ foo() }');
-                let $test = new $AST('function originalCode (){ ' + code.after + ' }');
+                let $ = new $AST('function originalCode (){ foo(); }');
+                let $test = new $AST('function originalCode (){' + code.after + '}');
 
                 $('#foo').wrap(code.before);
 
