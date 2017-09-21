@@ -1,8 +1,7 @@
-// https://github.com/estools/escodegen/wiki/API
-const escodegen = require('escodegen');
+const print = require('recast').print;
 
 function generate (ast, options) {
-    return escodegen.generate(ast, options);
+    return print(ast, options).code;
 }
 
 module.exports = generate;

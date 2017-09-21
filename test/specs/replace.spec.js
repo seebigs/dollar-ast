@@ -33,14 +33,14 @@ describe('replace', function () {
     describe('CallExpression', function (expect) {
         const $ = new $AST('function originalCode (){ foo(); }');
         $('#foo').replace('bar(1); bar(2);');
-        const $test = new $AST('function originalCode (){ bar(1); bar(2); }');
+        const $test = new $AST('function originalCode (){\n  bar(1);bar(2);\n}');
         expect($.ast.generate()).toBe($test.ast.generate());
     });
 
     describe('CallExpression Arguments', function (expect) {
         const $ = new $AST('function originalCode (){ hello(foo(), bar(3)) }');
         $('#foo').replace('bar(1); bar(2);');
-        const $test = new $AST('function originalCode (){ hello(bar(1), bar(2), bar(3)); }');
+        const $test = new $AST('function originalCode (){ hello(bar(1), bar(2), bar(3)) }');
         expect($.ast.generate()).toBe($test.ast.generate());
     });
 

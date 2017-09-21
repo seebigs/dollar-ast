@@ -2,7 +2,7 @@ const arrProto = Array.prototype;
 const AstLayer = require('./utils/ast.js');
 const utils = require('seebigs-utils');
 
-const methodFiles = utils.listFiles('./lib');
+const methodFiles = utils.listFiles(__dirname + '/lib');
 
 function $AST (code) {
     code = code || ''; // catch all falsey values

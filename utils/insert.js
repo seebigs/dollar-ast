@@ -11,7 +11,7 @@ function normalizeContent (toBeAdded, flattenedArguments, matches) {
         let contentType = typeof content;
         if (content) {
             if (contentType === 'string') {
-                normalizeContent(toBeAdded, parse(content).body, matches);
+                normalizeContent(toBeAdded, parse(content).program.body, matches);
 
             } else if (contentType === 'function') {
                 let returnValue = [content(matches)];
