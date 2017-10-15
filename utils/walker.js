@@ -1,8 +1,9 @@
 const each = require('seebigs-each');
+const ignoredKeys = require('./ignoredKeys');
 
 function walk (node, nodeKey, iteratee, skipNode) {
     each(node, function (value, key) {
-        if (value && key !== '_') {
+        if (value && ignoredKeys.indexOf(key) === -1) {
             if (Array.isArray(value)) {
                 each(value, function (arrMember, arrIndex) {
                     if (arrMember && typeof arrMember.type === 'string') {

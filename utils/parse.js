@@ -1,4 +1,4 @@
-const parser = require('recast').parse;
+const parser = require('babylon').parse;
 
 function parse (code) {
     return typeof code === 'string' ? parser(code) : code;

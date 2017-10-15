@@ -1,4 +1,5 @@
 const decycle = require('./decycle.js');
+const ignoredKeys = require('./ignoredKeys');
 
 function replacer (value, key) {
     // const metaKeys = [
@@ -20,7 +21,7 @@ function replacer (value, key) {
     //         return '[ '+ (Array.isArray(value) ? 'Array' : value.type) +' ]';
     //     }
     // }
-    if (key === '_') {
+    if (ignoredKeys.indexOf(key) !== -1) {
         return void 0;
     }
     return value;

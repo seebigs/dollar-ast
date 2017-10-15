@@ -3,37 +3,37 @@ const parse = require('./parse.js');
 const jsonifier = require('./jsonifier.js');
 const walker = require('./walker.js');
 
-function get () {
-    return this.__ast;
-}
-
-function set (code) {
-    let parsedCode = parse(code);
-    this.walk = walker(parsedCode);
-    this.walk(); // add parent to the tree
-    return this.__ast = parsedCode;
-}
-
-function generate (options) {
-    return generator(this.__ast, options);
-}
-
-function stringify (obj) {
-    return jsonifier(obj || this.__ast);
-}
-
 function AstLayer (code) {
-    this.__ast = {};
 
-    this.get = get;
-    this.set = set;
+    function ast () {
+        return ast.__ast;
+    }
 
-    this.generate = generate;
-    this.stringify = stringify;
+    ast.__ast = {};
 
-    this.walk = function(){};
+    function set (code) {
+        let parsedCode = parse(code);
+        ast.walk = walker(parsedCode);
+        ast.walk(); // add parent to the tree
+        return ast.__ast = parsedCode;
+    }
 
-    this.set(code);
+    function generate (options) {
+        return generator(ast.__ast, options);
+    }
+
+    function stringify (obj) {
+        return jsonifier(obj || ast.__ast);
+    }
+
+    ast.set = set;
+    ast.generate = generate;
+    ast.stringify = stringify;
+    ast.walk = function(){};
+
+    ast.set(code);
+
+    return ast;
 }
 
 module.exports = AstLayer;

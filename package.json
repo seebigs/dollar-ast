@@ -26,7 +26,8 @@
     "glob": "^7.1.2"
   },
   "dependencies": {
-    "recast": "^0.12.6",
+    "babel-generator": "^6.26.0",
+    "babylon": "^6.18.0",
     "seebigs-each": "^1.0.1",
     "seebigs-utils": "^1.4.1"
   }

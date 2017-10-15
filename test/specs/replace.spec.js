@@ -1,5 +1,9 @@
 const $AST = require('../../index.js');
 
+function withoutWhitespace (str) {
+    return str.replace(/\s/g, '');
+}
+
 describe('replace', function () {
 
     describe('VariableDeclarator', function (expect) {
@@ -27,14 +31,14 @@ describe('replace', function () {
         const $ = new $AST('function originalCode (){ function foo() {}; }');
         $('#foo').replace('function bar() {}');
         const $test = new $AST('function originalCode (){ function bar() {}; }');
-        expect($.ast.generate()).toBe($test.ast.generate());
+        expect(withoutWhitespace($.ast.generate())).toBe(withoutWhitespace($test.ast.generate()));
     });
 
     describe('CallExpression', function (expect) {
         const $ = new $AST('function originalCode (){ foo(); }');
         $('#foo').replace('bar(1); bar(2);');
         const $test = new $AST('function originalCode (){\n  bar(1);bar(2);\n}');
-        expect($.ast.generate()).toBe($test.ast.generate());
+        expect(withoutWhitespace($.ast.generate())).toBe(withoutWhitespace($test.ast.generate()));
     });
 
     describe('CallExpression Arguments', function (expect) {

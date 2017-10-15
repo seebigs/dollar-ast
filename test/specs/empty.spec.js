@@ -8,7 +8,7 @@ describe('empty', () => {
 
     describe('clears all child nodes from each match', function (expect) {
         $('#publicMethod').add('#privateMethod').empty();
-        let expected = '\nlet foo = 123,\n    bar = 456;\n\nfunction privateMethod() {}\n\nfunction publicMethod(one, two) {}\n\nmodule.exports = {\n    publicMethod,\n};\n';
+        let expected = 'let foo = 123,\n    bar = 456;\n\nfunction privateMethod() {}\n\nfunction publicMethod(one, two) {}\n\nmodule.exports = {\n  publicMethod\n};';
         expect($.ast.generate()).toBe(expected);
     });
 
