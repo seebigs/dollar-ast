@@ -85,7 +85,7 @@ function insertReplace (matches, toBeAdded) {
                     if (nKey === 'body') {
                         if (n.type === 'ReturnStatement') {
                             let modToBeAdded = [];
-                            toBeAdded.forEach(function (tba) {
+                            each(toBeAdded, function (tba) {
                                 if (tba.type === 'FunctionDeclaration') {
                                     try {
                                         modToBeAdded.push(tba.body.body[0]);
@@ -104,7 +104,7 @@ function insertReplace (matches, toBeAdded) {
 
                     } else if (nKey === 'arguments') {
                         let modToBeAdded = [];
-                        toBeAdded.forEach(function (tba) {
+                        each(toBeAdded, function (tba) {
                             if (tba.type === 'ExpressionStatement') {
                                 modToBeAdded.push(tba.expression);
                             } else {
@@ -112,6 +112,10 @@ function insertReplace (matches, toBeAdded) {
                             }
                         });
                         sliceReplace(n, modToBeAdded);
+                        break;
+
+                    } else if (nKey === 'program') {
+                        cParent[nKey] = toBeAdded[0]._._nodeParent;
                         break;
 
                     } else {

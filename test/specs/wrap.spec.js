@@ -54,15 +54,17 @@ describe('wrap', () => {
                 $('#foo').wrap(code.before);
 
                 expect($.ast.generate()).toBe($test.ast.generate());
-
-                if (code.print) {
-                    console.log();
-                    console.log($.ast.stringify());
-                    console.log();
-                    console.log($test.ast.stringify());
-                }
             });
         });
+    });
+
+    describe('can wrap the Program node', function (expect) {
+        let $ = new $AST('function originalCode(){ foo(); } function alsoMe(){ foo(); }');
+        let $test = new $AST('(function(){ function originalCode(){ foo(); } function alsoMe(){ foo(); } })();');
+
+        $('Program').wrap('(function(){___})();');
+
+        expect($.ast.generate()).toBe($test.ast.generate());
     });
 
     describe('returns dollar', function (expect) {
