@@ -119,6 +119,7 @@ function insertReplace (matches, toBeAdded) {
                         break;
 
                     } else {
+                        // match not found, traverse upwards and keep searching
                         n = n._._nodeParent;
                     }
 

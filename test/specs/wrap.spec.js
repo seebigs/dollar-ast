@@ -41,6 +41,11 @@ const codeTypes = [
         before: '(function(){___})()',
         after: ' (function() {foo()})(); ',
     },
+    {
+        type: 'AssignmentExpression',
+        before: 'module.exports = ___',
+        after: ' module.exports = foo(); ',
+    },
 ];
 
 describe('wrap', () => {
@@ -58,18 +63,20 @@ describe('wrap', () => {
         });
     });
 
-    describe('can wrap the Program node', function (expect) {
-        let $ = new $AST('function originalCode(){ foo(); } function alsoMe(){ foo(); }');
-        let $test = new $AST('(function(){ function originalCode(){ foo(); } function alsoMe(){ foo(); } })();');
-
-        $('Program').wrap('(function(){___})();');
-
-        expect($.ast.generate()).toBe($test.ast.generate());
+    describe('can wrap the Program node', function () {
+        codeTypes.forEach(function (code) {
+            describe(code.type, function (expect) {
+                let $ = new $AST('foo();');
+                let $test = new $AST(code.after);
+                $('Program').wrap(code.before);
+                expect($.ast.generate()).toBe($test.ast.generate());
+            });
+        });
     });
 
     describe('returns dollar', function (expect) {
         let $ = new $AST();
-        expect($().wrap({}).isDollar).toBe(true);
+        expect($().wrap('').isDollar).toBe(true);
     });
 
 });
