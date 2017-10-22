@@ -1,6 +1,6 @@
 {
   "name": "dollar-ast",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Interact with parsed code trees using familiar selector patterns",
   "keywords": [
     "$",
