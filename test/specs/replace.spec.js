@@ -50,7 +50,7 @@ describe('replace', function () {
 
     describe('ReturnStatement', function (expect) {
         const $ = new $AST('function originalCode (){ return foo; }');
-        $('#foo').replace('function dummy() { return bar; }');
+        $('#foo').replace('() => { return bar; }');
         const $test = new $AST('function originalCode (){ return bar; }');
         expect($.ast.generate()).toBe($test.ast.generate());
     });

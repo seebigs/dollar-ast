@@ -92,6 +92,12 @@ function insertReplace (matches, toBeAdded) {
                                     } catch(e) {
                                         modToBeAdded.push(tba);
                                     }
+                                } else if (tba.type === 'ExpressionStatement') {
+                                    try {
+                                        modToBeAdded.push(tba.expression.body.body[0]);
+                                    } catch (e) {
+                                        modToBeAdded.push(tba);
+                                    }
                                 } else {
                                     modToBeAdded.push(tba);
                                 }
