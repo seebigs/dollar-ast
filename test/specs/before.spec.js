@@ -46,7 +46,7 @@ describe('before', () => {
 
         expect($('VariableDeclarator').length).toBe(4);
 
-        $.ast().program.body.forEach(function (node, index) {
+        $.ast().body.forEach(function (node, index) {
             if (index < 4) {
                 expect(node.type).toBe('VariableDeclaration');
             } else {

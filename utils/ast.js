@@ -1,3 +1,4 @@
+const escodegen = require('escodegen');
 const generator = require('./generator.js');
 const parse = require('./parse.js');
 const jsonifier = require('./jsonifier.js');
@@ -12,13 +13,21 @@ function AstLayer (code) {
     ast.__ast = {};
 
     function set (code) {
-        let parsedCode = parse(code);
+        let comments = [];
+        let tokens = [];
+        let parsedCode = parse(code, {
+            ranges: true,
+            onComment: comments,
+            onToken: tokens,
+        });
+        escodegen.attachComments(parsedCode, comments, tokens);
         ast.walk = walker(parsedCode);
         ast.walk(); // add parent to the tree
         return ast.__ast = parsedCode;
     }
 
     function generate (options) {
+        options = options || { comment: true };
         return generator(ast.__ast, options);
     }
 

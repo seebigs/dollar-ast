@@ -46,7 +46,7 @@ describe('prepend', () => {
 
         expect($('VariableDeclarator').length).toBe(4);
 
-        $.ast().program.body[0].body.body.forEach(function (node, index) {
+        $.ast().body[0].body.body.forEach(function (node, index) {
             if (index > 3) {
                 expect(node.type).toBe('ExpressionStatement');
             } else {

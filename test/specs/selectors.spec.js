@@ -58,7 +58,7 @@ const byTypes = [
     },
     {
         code: '123',
-        types: ['NumericLiteral', 'ExpressionStatement'],
+        types: ['Literal', 'ExpressionStatement'],
     },
     {
         code: 'while(true){}',
@@ -110,7 +110,7 @@ const byTypes = [
     },
     {
         code: 'x = { a: 123 }',
-        types: ['ObjectExpression', 'AssignmentExpression', 'ObjectProperty'],
+        types: ['ObjectExpression', 'AssignmentExpression', 'Property'],
     },
     {
         code: '1 === 1',
