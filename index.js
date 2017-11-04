@@ -14,10 +14,11 @@ function $AST (code) {
     }
 
     $.ast = ast;
+    $.generate = ast.generate;
     $.isDollar = true;
 
     $.fn = {
-        ast,
+        ast: ast,
         isDollar: true,
         indexOf: arrProto.indexOf,
         push: arrProto.push,
