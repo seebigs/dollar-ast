@@ -10,8 +10,8 @@ describe('ast', () => {
     describe('default (get)', () => {
 
         describe('returns raw AST', function (expect) {
-            expect($.ast().type).toBe('File');
-            expect($().ast().type).toBe('File');
+            expect($.ast().type).toBe('Program');
+            expect($().ast().type).toBe('Program');
         });
 
     });
@@ -21,8 +21,8 @@ describe('ast', () => {
         let $a = new $AST('function originalCode (){}');
 
         describe('sets new AST', function (expect) {
-            expect($a.ast().type).toBe('File');
-            $a.ast.set({ type: 'NEW' });
+            expect($a.ast().type).toBe('Program');
+            $a.ast.set({ type: 'NEW', range: [0,1] });
             expect($a.ast().type).toBe('NEW');
         });
 
@@ -32,7 +32,7 @@ describe('ast', () => {
 
         describe('converts AST into code', function (expect) {
             let code = $.ast.generate();
-            expect(code).toBe('function originalCode() {\n  let me = "awesome";\n}');
+            expect(code).toBe("function originalCode() {\n    let me = 'awesome';\n}");
         });
 
     });
@@ -41,7 +41,7 @@ describe('ast', () => {
 
         describe('converts AST into a readable JSON string', function (expect) {
             let str = $.ast.stringify();
-            expect(str.indexOf('{\n    "type": "File"')).toBe(0);
+            expect(str.indexOf('{\n    "type": "Program"')).toBe(0);
         });
 
         describe('protects against noisy and circular references', function (expect) {

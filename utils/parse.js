@@ -1,7 +1,7 @@
-const parser = require('babylon').parse;
+const parser = require('acorn').parse;
 
-function parse (code) {
-    return typeof code === 'string' ? parser(code) : code;
+function parse (code, options) {
+    return typeof code === 'string' ? parser(code, options) : code;
 }
 
 module.exports = parse;

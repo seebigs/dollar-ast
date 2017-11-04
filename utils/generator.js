@@ -1,7 +1,7 @@
-const print = require('babel-generator').default;
+const print = require('escodegen').generate;
 
 function generate (ast, options) {
-    return print(ast, options).code;
+    return print(ast, options);
 }
 
 module.exports = generate;

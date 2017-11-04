@@ -11,7 +11,7 @@ function normalizeContent (toBeAdded, flattenedArguments, matches) {
         let contentType = typeof content;
         if (content) {
             if (contentType === 'string') {
-                normalizeContent(toBeAdded, parse(content).program.body, matches);
+                normalizeContent(toBeAdded, parse(content).body, matches);
 
             } else if (contentType === 'function') {
                 let returnValue = [content(matches)];
@@ -114,10 +114,6 @@ function insertReplace (matches, toBeAdded) {
                         sliceReplace(n, modToBeAdded);
                         break;
 
-                    } else if (nKey === 'program') {
-                        cParent[nKey] = toBeAdded[0]._._nodeParent;
-                        break;
-
                     } else {
                         // match not found, traverse upwards and keep searching
                         n = n._._nodeParent;
@@ -127,6 +123,9 @@ function insertReplace (matches, toBeAdded) {
                     break;
                 }
             }
+
+        } else if (match.type === 'Program') {
+            match.body = toBeAdded;
         }
     });
 }

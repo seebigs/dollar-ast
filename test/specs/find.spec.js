@@ -26,9 +26,9 @@ describe('find', () => {
     });
 
     describe('by attr', function (expect) {
-        var match = $(' [extra.raw=123] ');
+        var match = $(' [init.raw=123] ');
         expect(match.length).toBe(1);
-        match.length && expect(match[0].type).toBe('NumericLiteral');
+        match.length && expect(match[0].type).toBe('VariableDeclarator');
     });
 
     describe('by attr=length', function (expect) {
