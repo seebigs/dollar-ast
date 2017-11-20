@@ -1,6 +1,6 @@
 const childNodes = require('./child_nodes.js');
 const each = require('seebigs-each');
-const parse = require('./parse.js');
+const parse = require('./parser.js');
 
 /**
  * Normalizes different types of content input into the same thing

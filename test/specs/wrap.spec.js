@@ -58,7 +58,7 @@ describe('wrap', () => {
 
                 $('#foo').wrap(code.before);
 
-                expect($.ast.generate()).toBe($test.ast.generate());
+                expect($.generate()).toBe($test.generate());
             });
         });
     });
@@ -69,7 +69,7 @@ describe('wrap', () => {
                 let $ = new $AST('foo();');
                 let $test = new $AST(code.after);
                 $('Program').wrap(code.before);
-                expect($.ast.generate()).toBe($test.ast.generate());
+                expect($.generate()).toBe($test.generate());
             });
         });
     });

@@ -1,5 +1,5 @@
 const each = require('seebigs-each');
-const ignoredKeys = require('./ignoredKeys');
+const ignoredKeys = require('./ignored_keys');
 
 function walk (node, nodeKey, iteratee, skipNode) {
     each(node, function (value, key) {

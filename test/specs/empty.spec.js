@@ -9,7 +9,7 @@ describe('empty', () => {
     describe('clears all child nodes from each match', function (expect) {
         $('#publicMethod').add('#privateMethod').empty();
         let expected = 'let foo = 123, bar = 456;\nfunction privateMethod() {\n}\nfunction publicMethod(one, two) {\n}\nmodule.exports = { publicMethod };';
-        expect($.ast.generate()).toBe(expected);
+        expect($.generate()).toBe(expected);
     });
 
     describe('returns dollar', function (expect) {

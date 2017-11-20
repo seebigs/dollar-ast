@@ -11,7 +11,7 @@ describe('ast', () => {
 
         describe('returns raw AST', function (expect) {
             expect($.ast().type).toBe('Program');
-            expect($().ast().type).toBe('Program');
+            expect($().$.ast().type).toBe('Program');
         });
 
     });
@@ -22,7 +22,7 @@ describe('ast', () => {
 
         describe('sets new AST', function (expect) {
             expect($a.ast().type).toBe('Program');
-            $a.ast.set({ type: 'NEW', range: [0,1] });
+            $a.set({ type: 'NEW', range: [0,1] });
             expect($a.ast().type).toBe('NEW');
         });
 
@@ -31,7 +31,7 @@ describe('ast', () => {
     describe('generate', () => {
 
         describe('converts AST into code', function (expect) {
-            let code = $.ast.generate();
+            let code = $.generate();
             expect(code).toBe("function originalCode() {\n    let me = 'awesome';\n}");
         });
 
@@ -40,12 +40,12 @@ describe('ast', () => {
     describe('stringify', () => {
 
         describe('converts AST into a readable JSON string', function (expect) {
-            let str = $.ast.stringify();
+            let str = $.stringify();
             expect(str.indexOf('{\n    "type": "Program"')).toBe(0);
         });
 
         describe('protects against noisy and circular references', function (expect) {
-            let str = $().ast.stringify();
+            let str = $().$.stringify();
             expect(str.indexOf('"_"')).toBe(-1);
         });
 
@@ -54,8 +54,8 @@ describe('ast', () => {
     describe('walk', () => {
 
         describe('walk provides a function as an iterator', function (expect) {
-            expect(typeof $.ast.walk).toBe('function');
-            expect(typeof $().ast.walk).toBe('function');
+            expect(typeof $.walk).toBe('function');
+            expect(typeof $().$.walk).toBe('function');
         });
 
     });

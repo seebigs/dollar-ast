@@ -1,5 +1,5 @@
 const decycle = require('./decycle.js');
-const ignoredKeys = require('./ignoredKeys');
+const ignoredKeys = require('./ignored_keys');
 
 function replacer (value, key) {
     // const metaKeys = [

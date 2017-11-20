@@ -79,6 +79,11 @@ describe('find', () => {
         match.length && expect(match[0].type).toBe('VariableDeclarator');
     });
 
+    describe('with context nonsense', function (expect) {
+        var match = $('VariableDeclaration', new Date());
+        expect(match.length).toBe(0);
+    });
+
     describe('with context type', function (expect) {
         var match = $('VariableDeclaration', 'FunctionDeclaration');
         expect(match.length).toBe(2);
