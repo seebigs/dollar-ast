@@ -37,15 +37,24 @@ describe('ast', () => {
 
     });
 
-    describe('stringify', () => {
+    describe('minify', () => {
+
+        describe('converts AST into minified code', function (expect) {
+            let code = $.minify();
+            expect(code).toBe("function originalCode(){}");
+        });
+
+    });
+
+    describe('toString', () => {
 
         describe('converts AST into a readable JSON string', function (expect) {
-            let str = $.stringify();
+            let str = $.toString();
             expect(str.indexOf('{\n    "type": "Program"')).toBe(0);
         });
 
         describe('protects against noisy and circular references', function (expect) {
-            let str = $().$.stringify();
+            let str = $().$.toString();
             expect(str.indexOf('"_"')).toBe(-1);
         });
 

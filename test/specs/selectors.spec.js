@@ -149,7 +149,7 @@ describe('selectors', function () {
             describe(node.type, function (expect) {
                 let $ = new $AST(node.code);
                 if (node.print) {
-                    console.log($.ast.stringify());
+                    console.log($.ast.toString());
                 }
                 let $match = $('#foo');
                 expect($match.length).toBe(1);
@@ -162,7 +162,7 @@ describe('selectors', function () {
         byTypes.forEach(function (node) {
             let $ = new $AST(node.code);
             if (node.print) {
-                console.log($.ast.stringify());
+                console.log($.ast.toString());
             }
             node.types.forEach(function (nodeType) {
                 describe(nodeType, function (expect) {

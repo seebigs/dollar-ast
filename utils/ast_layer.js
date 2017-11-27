@@ -1,6 +1,7 @@
 const arrSlice = Array.prototype.slice;
 const escodegen = require('escodegen');
 const generator = require('./generator.js');
+const minifier = require('./minifier.js');
 const parser = require('./parser.js');
 const jsonifier = require('./jsonifier.js');
 const walker = require('./walker.js');
@@ -69,7 +70,12 @@ function AstLayer (code) {
         return generator(__ast, options);
     }
 
-    function stringify (obj) {
+    function minify (options) {
+        options = options || {};
+        return minifier(__ast, options);
+    }
+
+    function toString (obj) {
         return jsonifier(obj || __ast);
     }
 
@@ -85,8 +91,9 @@ function AstLayer (code) {
     return {
         ast,
         generate,
+        minify,
         set,
-        stringify,
+        toString,
         walk,
     };
 }
