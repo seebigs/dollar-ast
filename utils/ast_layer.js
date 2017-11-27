@@ -14,38 +14,18 @@ function parse (rawCode) {
     let comments = [];
     let tokens = [];
 
-    try {
-        code = parser(rawCode, {
-            // locations: true,
-            ranges: true,
-            onComment: comments,
-            onToken: tokens,
-        });
-
-    } catch (err) {
-        if (typeof rawCode === 'string') {
-            printAdditionalErrorContext(rawCode, err);
-        }
-        throw new SyntaxError(err.message);
-    }
+    code = parser(rawCode, {
+        // locations: true,
+        ranges: true,
+        onComment: comments,
+        onToken: tokens,
+    });
 
     return {
         code: code,
         comments: comments,
         tokens: tokens,
     };
-}
-
-function printAdditionalErrorContext (rawCode, err) {
-    const errFirstLine = err.stack.split('\n')[0];
-    let errLine = errFirstLine.substr(errFirstLine.lastIndexOf('(') + 1);
-    const errLineSplit = errLine.split(':');
-    errLine = parseInt(errLineSplit[0]);
-    const errCol = parseInt(errLineSplit[1]);
-    const badLine = rawCode.split('\n')[errLine - 1];
-    console.log('Error parsing code at:');
-    console.log(badLine.substring(errCol - 100, errCol + 100));
-    console.log();
 }
 
 function AstLayer (code) {
